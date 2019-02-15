@@ -52,14 +52,15 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>70</x>
       <y>60</y>
-      <width>61</width>
-      <height>61</height>
+      <width>151</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Send &quot;8&quot; to 
+the model to filter</string>
     </property>
    </widget>
   </widget>

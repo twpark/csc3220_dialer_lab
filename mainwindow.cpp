@@ -35,8 +35,7 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
     ui->label->setText(myModel->getPhoneNumber(index.row()));
 }
 
-
-
-
-
-
+void MainWindow::on_pushButton_clicked()
+{
+    myModel->setFilterString("80");
+}

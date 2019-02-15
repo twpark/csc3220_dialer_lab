@@ -13,7 +13,7 @@ MyAddressBookModel::MyAddressBookModel(QObject *parent)
 
 int MyAddressBookModel::rowCount(const QModelIndex &parent) const
 {
-    return firstNames.size();
+    return filteredIndex.size();
 }
 
 int MyAddressBookModel::columnCount(const QModelIndex &parent) const
@@ -26,11 +26,11 @@ QVariant MyAddressBookModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole) {
         switch(index.column()) {
         case 0: // firstname
-            return firstNames.at(index.row());
+            return firstNames.at(filteredIndex[index.row()]);
         case 1:
-            return lastNames.at(index.row());
+            return lastNames.at(filteredIndex[index.row()]);
         case 2:
-            return phoneNumbers.at(index.row());
+            return phoneNumbers.at(filteredIndex[index.row()]);
         }
 //        return QString("Row%1, Column%2")
 //                .arg(index.row())
@@ -68,6 +68,8 @@ void MyAddressBookModel::openFile(QString filePath)
         firstNames.push_back(fields[0]);
         lastNames.push_back(fields[1]);
         phoneNumbers.push_back(fields[7]);
+
+        filteredIndex.push_back(i);
     }
 
     file.close();
@@ -77,7 +79,23 @@ void MyAddressBookModel::openFile(QString filePath)
 
 QString MyAddressBookModel::getPhoneNumber(int index)
 {
-    return phoneNumbers.at(index);
+    return phoneNumbers.at(filteredIndex[index]);
+}
+
+void MyAddressBookModel::setFilterString(QString fStr)
+{
+    // clear filtered index and then I will rebuild the index.
+    filteredIndex.clear();
+
+    // check if phone numbers are starting with fStr.
+    for (int i = 0; i < phoneNumbers.size(); i++) {
+        if (phoneNumbers[i].startsWith(fStr)) {
+            filteredIndex.push_back(i);
+            //std::cout << phoneNumbers[i].toStdString() << std::endl;
+        }
+    }
+
+    emit layoutChanged();
 }
 
 
